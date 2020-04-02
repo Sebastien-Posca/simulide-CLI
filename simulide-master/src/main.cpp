@@ -19,16 +19,11 @@
 
 #include <QApplication>
 #include <QTranslator>
+#include <string>
+#include <iostream>
+using namespace std;
 
 #include "mainwindow.h"
-
-QCoreApplication* createApplication(int &argc, char *argv[])
-{
-    for (int i = 1; i < argc; ++i)
-        if (!qstrcmp(argv[i], "-no-gui"))
-            return new QCoreApplication(argc, argv);
-    return new QApplication(argc, argv);
-}
 
 int main(int argc, char *argv[])
 {
@@ -47,9 +42,33 @@ int main(int argc, char *argv[])
     QCoreApplication::setLibraryPaths(paths);
 #endif
 
-QScopedPointer<QCoreApplication> app(createApplication(argc, argv));
+    string simuPath;
+    string hexPath;
 
-       // start GUI version...
+     qDebug() << "You have entered " << argc 
+         << " arguments:" << "\n"; 
+  
+    for (int i = 0; i < argc; ++i) {
+        qDebug() << argv[i] << "\n"; 
+        // if(strcmp(argv[i],"--simu") == 1){
+        //     simuPath=argv[i+1];
+        // }
+        // if(strcmp(argv[i],"--hex") == 1){
+        //     hexPath=argv[i+1];
+        // }
+    }
+
+    simuPath = argv[2];
+    hexPath = argv[4];
+
+
+    cout << "simu" << simuPath<< "\n"; 
+    cout << "hex" << hexPath<< "\n"; 
+
+
+    //QApplication::setGraphicsSystem( "raster" );//native, raster, opengl
+    QApplication app( argc, argv );
+
     QString locale   = QLocale::system().name().split("_").first();
     QString langFile = "../share/simulide/translations/simulide_"+locale+".qm";
     
@@ -58,9 +77,11 @@ QScopedPointer<QCoreApplication> app(createApplication(argc, argv));
     
     QTranslator translator;
     translator.load( langFile );
-    app->installTranslator( &translator );
-
+    app.installTranslator( &translator );
+    
     MainWindow window;
+
+    window.autoStart(hexPath);
     
     QRect screenGeometry = QApplication::desktop()->screenGeometry();
     int x = ( screenGeometry.width()-window.width() ) / 2;
@@ -68,10 +89,7 @@ QScopedPointer<QCoreApplication> app(createApplication(argc, argv));
     window.move( x, y );
 
     window.show();
-    //QApplication::setGraphicsSystem( "raster" );//native, raster, opengl
-    // QApplication app( argc, argv );
-
-    app->setApplicationVersion( APP_VERSION );
-    return app->exec();
+    app.setApplicationVersion( APP_VERSION );
+    return app.exec();
 }
 

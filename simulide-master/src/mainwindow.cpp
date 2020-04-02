@@ -28,6 +28,10 @@
 #include "utils.h"
 #include "simuapi_apppath.h"
 
+#include <string>
+#include <iostream>
+using namespace std;
+
 
 MainWindow* MainWindow::m_pSelf = 0l;
 
@@ -52,12 +56,19 @@ MainWindow::MainWindow()
     readSettings();
     
     loadPlugins();
+
+   
+}
+MainWindow::~MainWindow(){ }
+
+void MainWindow::autoStart(string hex){
+    cout<<"okkkkkkkkkkkk"<<hex;
+    QString qstr = QString::fromStdString(hex);
     m_circuit->loadCirc("ok");
-    m_editor->loadFile("/mnt/d/Documents/STAGE/blink.hex");
+    m_editor->loadFile(qstr);
     m_circuit->powerCircOn();
     m_editor->upload();
 }
-MainWindow::~MainWindow(){ }
 
 void MainWindow::closeEvent( QCloseEvent *event )
 {

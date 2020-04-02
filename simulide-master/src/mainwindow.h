@@ -21,6 +21,9 @@
 #define MAINWINDOW_H
 
 #include <QtWidgets>
+#include <string>
+#include <iostream>
+using namespace std;
 
 class PropertiesWidget;
 class ComponentSelector;
@@ -39,7 +42,7 @@ class MAINMODULE_EXPORT MainWindow : public QMainWindow
  static MainWindow* self() { return m_pSelf; }
 
         QSettings* settings();
-
+        void autoStart(string hex);
         void loadPlugins();
         void unLoadPugin( QString pluginName );
         
