@@ -61,11 +61,11 @@ MainWindow::MainWindow()
 }
 MainWindow::~MainWindow(){ }
 
-void MainWindow::autoStart(string hex){
-    cout<<"okkkkkkkkkkkk"<<hex;
-    QString qstr = QString::fromStdString(hex);
-    m_circuit->loadCirc("ok");
-    m_editor->loadFile(qstr);
+void MainWindow::autoStart(string simu, string hex){
+    QString simuqstr = QString::fromStdString(simu);
+    QString hexqstr = QString::fromStdString(hex);
+    m_circuit->loadCirc(simuqstr);
+    m_editor->loadFile(hexqstr);
     m_circuit->powerCircOn();
     m_editor->upload();
 }

@@ -81,7 +81,7 @@ int main(int argc, char *argv[])
     
     MainWindow window;
 
-    window.autoStart(hexPath);
+    window.autoStart(simuPath, hexPath);
     
     QRect screenGeometry = QApplication::desktop()->screenGeometry();
     int x = ( screenGeometry.width()-window.width() ) / 2;

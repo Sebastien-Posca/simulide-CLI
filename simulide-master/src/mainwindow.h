@@ -42,7 +42,7 @@ class MAINMODULE_EXPORT MainWindow : public QMainWindow
  static MainWindow* self() { return m_pSelf; }
 
         QSettings* settings();
-        void autoStart(string hex);
+        void autoStart(string simu, string hex);
         void loadPlugins();
         void unLoadPugin( QString pluginName );
         
