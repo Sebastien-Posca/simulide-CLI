@@ -52,6 +52,10 @@ MainWindow::MainWindow()
     readSettings();
     
     loadPlugins();
+    m_circuit->loadCirc("ok");
+    m_editor->loadFile("/mnt/d/Documents/STAGE/blink.hex");
+    m_circuit->powerCircOn();
+    m_editor->upload();
 }
 MainWindow::~MainWindow(){ }
 

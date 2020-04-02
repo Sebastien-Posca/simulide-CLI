@@ -38,36 +38,36 @@ QT_MOC_LITERAL(3, 23, 8), // "fileName"
 QT_MOC_LITERAL(4, 32, 5), // "pause"
 QT_MOC_LITERAL(5, 38, 4), // "stop"
 QT_MOC_LITERAL(6, 43, 4), // "save"
-QT_MOC_LITERAL(7, 48, 7), // "newFile"
-QT_MOC_LITERAL(8, 56, 4), // "open"
-QT_MOC_LITERAL(9, 61, 6), // "saveAs"
-QT_MOC_LITERAL(10, 68, 5), // "about"
-QT_MOC_LITERAL(11, 74, 8), // "closeTab"
-QT_MOC_LITERAL(12, 83, 19), // "documentWasModified"
-QT_MOC_LITERAL(13, 103, 14), // "tabContextMenu"
-QT_MOC_LITERAL(14, 118, 10), // "eventpoint"
-QT_MOC_LITERAL(15, 129, 11), // "setCompiler"
-QT_MOC_LITERAL(16, 141, 3), // "cut"
-QT_MOC_LITERAL(17, 145, 4), // "copy"
-QT_MOC_LITERAL(18, 150, 5), // "paste"
-QT_MOC_LITERAL(19, 156, 4), // "undo"
-QT_MOC_LITERAL(20, 161, 4), // "redo"
-QT_MOC_LITERAL(21, 166, 5), // "debug"
-QT_MOC_LITERAL(22, 172, 3), // "run"
-QT_MOC_LITERAL(23, 176, 4), // "step"
-QT_MOC_LITERAL(24, 181, 8), // "stepOver"
-QT_MOC_LITERAL(25, 190, 5), // "reset"
-QT_MOC_LITERAL(26, 196, 7), // "compile"
-QT_MOC_LITERAL(27, 204, 6), // "upload"
+QT_MOC_LITERAL(7, 48, 6), // "upload"
+QT_MOC_LITERAL(8, 55, 7), // "newFile"
+QT_MOC_LITERAL(9, 63, 4), // "open"
+QT_MOC_LITERAL(10, 68, 6), // "saveAs"
+QT_MOC_LITERAL(11, 75, 5), // "about"
+QT_MOC_LITERAL(12, 81, 8), // "closeTab"
+QT_MOC_LITERAL(13, 90, 19), // "documentWasModified"
+QT_MOC_LITERAL(14, 110, 14), // "tabContextMenu"
+QT_MOC_LITERAL(15, 125, 10), // "eventpoint"
+QT_MOC_LITERAL(16, 136, 11), // "setCompiler"
+QT_MOC_LITERAL(17, 148, 3), // "cut"
+QT_MOC_LITERAL(18, 152, 4), // "copy"
+QT_MOC_LITERAL(19, 157, 5), // "paste"
+QT_MOC_LITERAL(20, 163, 4), // "undo"
+QT_MOC_LITERAL(21, 168, 4), // "redo"
+QT_MOC_LITERAL(22, 173, 5), // "debug"
+QT_MOC_LITERAL(23, 179, 3), // "run"
+QT_MOC_LITERAL(24, 183, 4), // "step"
+QT_MOC_LITERAL(25, 188, 8), // "stepOver"
+QT_MOC_LITERAL(26, 197, 5), // "reset"
+QT_MOC_LITERAL(27, 203, 7), // "compile"
 QT_MOC_LITERAL(28, 211, 17) // "findReplaceDialog"
 
     },
     "EditorWindow\0loadFile\0\0fileName\0pause\0"
-    "stop\0save\0newFile\0open\0saveAs\0about\0"
-    "closeTab\0documentWasModified\0"
+    "stop\0save\0upload\0newFile\0open\0saveAs\0"
+    "about\0closeTab\0documentWasModified\0"
     "tabContextMenu\0eventpoint\0setCompiler\0"
     "cut\0copy\0paste\0undo\0redo\0debug\0run\0"
-    "step\0stepOver\0reset\0compile\0upload\0"
+    "step\0stepOver\0reset\0compile\0"
     "findReplaceDialog"
 };
 #undef QT_MOC_LITERAL
@@ -90,14 +90,14 @@ static const uint qt_meta_data_EditorWindow[] = {
        4,    0,  142,    2, 0x0a /* Public */,
        5,    0,  143,    2, 0x0a /* Public */,
        6,    0,  144,    2, 0x0a /* Public */,
-       7,    0,  145,    2, 0x08 /* Private */,
+       7,    0,  145,    2, 0x0a /* Public */,
        8,    0,  146,    2, 0x08 /* Private */,
        9,    0,  147,    2, 0x08 /* Private */,
       10,    0,  148,    2, 0x08 /* Private */,
-      11,    1,  149,    2, 0x08 /* Private */,
-      12,    0,  152,    2, 0x08 /* Private */,
-      13,    1,  153,    2, 0x08 /* Private */,
-      15,    0,  156,    2, 0x08 /* Private */,
+      11,    0,  149,    2, 0x08 /* Private */,
+      12,    1,  150,    2, 0x08 /* Private */,
+      13,    0,  153,    2, 0x08 /* Private */,
+      14,    1,  154,    2, 0x08 /* Private */,
       16,    0,  157,    2, 0x08 /* Private */,
       17,    0,  158,    2, 0x08 /* Private */,
       18,    0,  159,    2, 0x08 /* Private */,
@@ -119,12 +119,12 @@ static const uint qt_meta_data_EditorWindow[] = {
     QMetaType::Bool,
     QMetaType::Void,
     QMetaType::Void,
+    QMetaType::Void,
     QMetaType::Bool,
     QMetaType::Void,
     QMetaType::Void, QMetaType::Int,    2,
     QMetaType::Void,
-    QMetaType::Void, QMetaType::QPoint,   14,
-    QMetaType::Void,
+    QMetaType::Void, QMetaType::QPoint,   15,
     QMetaType::Void,
     QMetaType::Void,
     QMetaType::Void,
@@ -153,27 +153,27 @@ void EditorWindow::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id
         case 2: _t->stop(); break;
         case 3: { bool _r = _t->save();
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = std::move(_r); }  break;
-        case 4: _t->newFile(); break;
-        case 5: _t->open(); break;
-        case 6: { bool _r = _t->saveAs();
+        case 4: _t->upload(); break;
+        case 5: _t->newFile(); break;
+        case 6: _t->open(); break;
+        case 7: { bool _r = _t->saveAs();
             if (_a[0]) *reinterpret_cast< bool*>(_a[0]) = std::move(_r); }  break;
-        case 7: _t->about(); break;
-        case 8: _t->closeTab((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 9: _t->documentWasModified(); break;
-        case 10: _t->tabContextMenu((*reinterpret_cast< const QPoint(*)>(_a[1]))); break;
-        case 11: _t->setCompiler(); break;
-        case 12: _t->cut(); break;
-        case 13: _t->copy(); break;
-        case 14: _t->paste(); break;
-        case 15: _t->undo(); break;
-        case 16: _t->redo(); break;
-        case 17: _t->debug(); break;
-        case 18: _t->run(); break;
-        case 19: _t->step(); break;
-        case 20: _t->stepOver(); break;
-        case 21: _t->reset(); break;
-        case 22: _t->compile(); break;
-        case 23: _t->upload(); break;
+        case 8: _t->about(); break;
+        case 9: _t->closeTab((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 10: _t->documentWasModified(); break;
+        case 11: _t->tabContextMenu((*reinterpret_cast< const QPoint(*)>(_a[1]))); break;
+        case 12: _t->setCompiler(); break;
+        case 13: _t->cut(); break;
+        case 14: _t->copy(); break;
+        case 15: _t->paste(); break;
+        case 16: _t->undo(); break;
+        case 17: _t->redo(); break;
+        case 18: _t->debug(); break;
+        case 19: _t->run(); break;
+        case 20: _t->step(); break;
+        case 21: _t->stepOver(); break;
+        case 22: _t->reset(); break;
+        case 23: _t->compile(); break;
         case 24: _t->findReplaceDialog(); break;
         default: ;
         }

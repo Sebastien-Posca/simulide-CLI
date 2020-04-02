@@ -22,6 +22,14 @@
 
 #include "mainwindow.h"
 
+QCoreApplication* createApplication(int &argc, char *argv[])
+{
+    for (int i = 1; i < argc; ++i)
+        if (!qstrcmp(argv[i], "-no-gui"))
+            return new QCoreApplication(argc, argv);
+    return new QApplication(argc, argv);
+}
+
 int main(int argc, char *argv[])
 {
 
@@ -39,9 +47,9 @@ int main(int argc, char *argv[])
     QCoreApplication::setLibraryPaths(paths);
 #endif
 
-    //QApplication::setGraphicsSystem( "raster" );//native, raster, opengl
-    QApplication app( argc, argv );
+QScopedPointer<QCoreApplication> app(createApplication(argc, argv));
 
+       // start GUI version...
     QString locale   = QLocale::system().name().split("_").first();
     QString langFile = "../share/simulide/translations/simulide_"+locale+".qm";
     
@@ -50,7 +58,7 @@ int main(int argc, char *argv[])
     
     QTranslator translator;
     translator.load( langFile );
-    app.installTranslator( &translator );
+    app->installTranslator( &translator );
 
     MainWindow window;
     
@@ -60,7 +68,10 @@ int main(int argc, char *argv[])
     window.move( x, y );
 
     window.show();
-    app.setApplicationVersion( APP_VERSION );
-    return app.exec();
+    //QApplication::setGraphicsSystem( "raster" );//native, raster, opengl
+    // QApplication app( argc, argv );
+
+    app->setApplicationVersion( APP_VERSION );
+    return app->exec();
 }
 

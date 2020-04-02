@@ -172,6 +172,8 @@ void CircuitWidget::openCirc()
 
 void CircuitWidget::loadCirc( QString path )
 {
+    path = "/mnt/d/Documents/STAGE/test_circuit.simu";
+    qDebug()<<path;
     if( !path.isEmpty() && path.endsWith(".simu") )
     {
         newCircuit();

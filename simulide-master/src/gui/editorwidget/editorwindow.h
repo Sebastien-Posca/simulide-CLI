@@ -42,6 +42,8 @@ class EditorWindow : public QWidget
         void pause();
         void stop();
         bool save();
+        void upload();
+
         
     private slots:
         void newFile();
@@ -64,7 +66,6 @@ class EditorWindow : public QWidget
         void stepOver();
         void reset();
         void compile();
-        void upload();
         void findReplaceDialog();
 
     private:
