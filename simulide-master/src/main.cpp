@@ -48,18 +48,24 @@ int main(int argc, char *argv[])
      qDebug() << "You have entered " << argc 
          << " arguments:" << "\n"; 
   
-    for (int i = 0; i < argc; ++i) {
+    for (int i = 0; i < argc-1; ++i) {
         qDebug() << argv[i] << "\n"; 
-        // if(strcmp(argv[i],"--simu") == 1){
-        //     simuPath=argv[i+1];
-        // }
-        // if(strcmp(argv[i],"--hex") == 1){
-        //     hexPath=argv[i+1];
-        // }
+         qDebug() << "i+1 : "<< argv[i+1] << "\n"; 
+
+        if(strcmp(argv[i],"--simu") == 0){
+                     qDebug() << "SIMU : "<< argv[i+1] << "\n"; 
+
+            simuPath=argv[i+1];
+        }
+        if(strcmp(argv[i],"--hex") == 0){
+                                 qDebug() << "HEX : "<< argv[i+1] << "\n"; 
+
+            hexPath=argv[i+1];
+        }
     }
 
-    simuPath = argv[2];
-    hexPath = argv[4];
+    // simuPath = argv[2];
+    // hexPath = argv[4];
 
 
     cout << "simu" << simuPath<< "\n"; 

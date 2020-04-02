@@ -164,7 +164,7 @@ void AVRComponentPin::setPullup( uint32_t value )
 {
     if( !m_isInput ) return;
     
-    //qDebug() << "Port" << m_port << m_id << "   pullup: " << (value>0);
+    // qDebug() << "Port" << m_port << m_id << "   pullup: " << (value>0);
 
     if( value>0 )                         // Activate pullup
     {
@@ -191,7 +191,7 @@ void AVRComponentPin::setPullup( uint32_t value )
 void AVRComponentPin::set_pinVoltage( uint32_t value )
 {
     if( m_isInput ) return;
-    //qDebug() << "Port" << m_port << m_id << "   estado: " << value;
+    qDebug() << "Port" << m_port << m_id << "   value: " << value;
 
     //if( m_isInput ) setPullup( value>0 ); // Activate pullup when port is written while input
 
@@ -211,7 +211,7 @@ void AVRComponentPin::set_pinVoltage( uint32_t value )
 
 void AVRComponentPin::set_pinImpedance( uint32_t value )
 {
-    //qDebug() << "Port" << m_port << m_id << "   salida: " << (value > 0 );
+    qDebug() << "Port" << m_port << m_id << "  is Output: " << (value > 0 );
     
     if( value > 0 )                         // Pis is Output
     {
@@ -227,7 +227,7 @@ void AVRComponentPin::set_pinImpedance( uint32_t value )
         if( m_ePin[0]->isConnected() && m_attached )
             m_ePin[0]->getEnode()->addToChangedFast(this);
     }
-    //qDebug()<< m_id << "Port" << m_port << m_pinN << "   salida: " << (value and ( 1<<m_pinN ));
+    // qDebug()<< m_id << "Port" << m_port << m_pinN << "   output: " << (value and ( 1<<m_pinN ));
 }
 
 void AVRComponentPin::adcread()

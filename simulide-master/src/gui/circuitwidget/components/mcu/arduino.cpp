@@ -71,7 +71,7 @@ Arduino::Arduino( QObject* parent, QString type, QString id )
         setFreq( 16 );
         //initBootloader();
         
-        qDebug() <<"     ..."<<m_id<<"OK c'est moi\n";
+        qDebug() <<"     ..."<<m_id<<"OK\n";
     }
     else
     {

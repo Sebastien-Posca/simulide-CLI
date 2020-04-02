@@ -77,8 +77,6 @@ void McuComponent::initChip()
     
     QFile file( m_dataFile );
 
-    qDebug() <<"YES IAM\n";
-
     if(( m_dataFile == "" ) || ( !file.exists() ))
     {
         m_error = 1;
