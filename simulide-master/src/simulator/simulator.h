@@ -51,6 +51,7 @@ class MAINMODULE_EXPORT Simulator : public QObject
         void runGraphicStep();
         void runExtraStep();
         
+        int getTime();
         int simuRate() { return m_simuRate; }
         int simuRateChanged( int rate );
 

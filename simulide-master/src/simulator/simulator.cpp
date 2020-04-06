@@ -126,7 +126,6 @@ void Simulator::runCircuit()
 void Simulator::runCircuitStep()
 {
     m_step ++;
-
     // Run Reactive Elements
     if( ++m_reacCounter >= m_stepsPrea )
     {
@@ -203,6 +202,10 @@ void Simulator::runContinuous()
     m_debugging = false;
     std::cout << "\n    Running \n"<<std::endl;
     m_timerId = this->startTimer( m_timerTick );
+}
+
+int Simulator::getTime(){
+    return m_RefTimer.elapsed();
 }
 
 void Simulator::debug()
@@ -306,6 +309,7 @@ void Simulator::resumeSim()
 
 void Simulator::stopTimer()
 {
+
     if( m_timerId != 0 )
     {
         this->killTimer( m_timerId );
