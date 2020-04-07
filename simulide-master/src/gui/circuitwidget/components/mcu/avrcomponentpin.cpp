@@ -191,7 +191,27 @@ void AVRComponentPin::setPullup( uint32_t value )
 void AVRComponentPin::set_pinVoltage( uint32_t value )
 {
     if( m_isInput ) return;
-    qDebug() <<  Simulator::self()->getTime() << "Port" << m_port << m_id << "   value: " << value;
+    qDebug() <<  Simulator::self()->getTime() << "Port" << m_port << m_id << "   value : " << value;
+// ==============================================================================================================
+    static QJsonArray tempList;
+    QJsonObject tempObject
+{
+    {"time", (int) Simulator::self()->getTime() },
+    {"port", m_id},
+    {"value", (int) value}
+}; 
+    tempList.append(tempObject);
+    QFile save_file("out.json");
+if(!save_file.open(QIODevice::WriteOnly)){
+    qDebug() << "failed to open save file";
+    exit(1);
+}
+QJsonDocument json_doc(tempList);
+QString json_string = json_doc.toJson();
+save_file.write(json_string.toLocal8Bit());
+save_file.close();
+// ==============================================================================================================
+
 
     //if( m_isInput ) setPullup( value>0 ); // Activate pullup when port is written while input
 
