@@ -44,6 +44,8 @@ int main(int argc, char *argv[])
 
     string simuPath;
     string hexPath;
+    string logsPath;
+
   
     for (int i = 0; i < argc-1; ++i) {
 
@@ -53,42 +55,44 @@ int main(int argc, char *argv[])
         if(strcmp(argv[i],"--hex") == 0){
             hexPath=argv[i+1];
         }
+        if(strcmp(argv[i],"--logs") == 0){
+            logsPath=argv[i+1];
+            QFile file_obj(QString::fromStdString(logsPath));
+            if(!file_obj.open(QIODevice::ReadOnly)){
+                qDebug()<<"Failed to open " << QString::fromStdString(logsPath);
+                exit(1);
+            }
+
+            QTextStream file_text(&file_obj);
+            QString json_string;
+            json_string = file_text.readAll();
+            file_obj.close();
+            QByteArray json_bytes = json_string.toLocal8Bit();
+            auto json_doc=QJsonDocument::fromJson(json_bytes);
+
+            if(json_doc.isNull()){
+                qDebug()<<"Failed to create JSON doc.";
+                exit(2);
+            }
+            if(!json_doc.isArray()){
+                qDebug() << "JSON doc is not an array.";
+                exit(1);
+            }
+
+            QJsonArray json_array = json_doc.array();
+
+            if(json_array.isEmpty()){
+                qDebug() << "The array is empty";
+                exit(1);
+            }
+            qDebug() << json_array;
+            for(int i=0; i< json_array.count(); ++i){
+                qDebug() << i;
+                qDebug() << json_array.at(i).toObject();
+            }
+        }
+        
     }
-// ==========================================================================
-QFile file_obj("in.json");
-if(!file_obj.open(QIODevice::ReadOnly)){
-    qDebug()<<"Failed to open "<<"in.json";
-    exit(1);
-}
-
-QTextStream file_text(&file_obj);
-QString json_string;
-json_string = file_text.readAll();
-file_obj.close();
-QByteArray json_bytes = json_string.toLocal8Bit();
-auto json_doc=QJsonDocument::fromJson(json_bytes);
-
-if(json_doc.isNull()){
-    qDebug()<<"Failed to create JSON doc.";
-    exit(2);
-}
-if(!json_doc.isArray()){
-    qDebug() << "JSON doc is not an array.";
-    exit(1);
-}
-
-QJsonArray json_array = json_doc.array();
-
-if(json_array.isEmpty()){
-    qDebug() << "The array is empty";
-    exit(1);
-}
- qDebug() << json_array;
-for(int i=0; i< json_array.count(); ++i){
-    qDebug() << i;
-    qDebug() << json_array.at(i).toObject();
-}
-// ==========================================================================
     //QApplication::setGraphicsSystem( "raster" );//native, raster, opengl
     QApplication app( argc, argv );
 
@@ -104,7 +108,9 @@ for(int i=0; i< json_array.count(); ++i){
     
     MainWindow window;
 
-    window.autoStart(simuPath, hexPath);
+    if(!simuPath.empty() && !hexPath.empty()){
+        window.autoStart(simuPath, hexPath);
+    }
     
     QRect screenGeometry = QApplication::desktop()->screenGeometry();
     int x = ( screenGeometry.width()-window.width() ) / 2;

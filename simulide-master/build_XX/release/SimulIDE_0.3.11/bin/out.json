@@ -1,12 +1,7 @@
 [
     {
         "port": "PB5",
-        "time": 113,
+        "time": 112,
         "value": 1
-    },
-    {
-        "port": "PB5",
-        "time": 1108,
-        "value": 0
     }
 ]
