@@ -45,24 +45,29 @@ int main(int argc, char *argv[])
     string simuPath;
     string hexPath;
     string logsPath;
+    string logsPath2;
 
   
     for (int i = 0; i < argc-1; ++i) {
 
         if(strcmp(argv[i],"--simu") == 0){
-            simuPath=argv[i+1];
+            simuPath=argv[++i];
         }
         if(strcmp(argv[i],"--hex") == 0){
-            hexPath=argv[i+1];
+            hexPath=argv[++i];
         }
         if(strcmp(argv[i],"--logs") == 0){
-            logsPath=argv[i+1];
+            logsPath=argv[++i];
+            logsPath2=argv[++i];
+            qDebug()<<QString::fromStdString(logsPath);
+            qDebug()<<QString::fromStdString(logsPath2);
+
             QFile file_obj(QString::fromStdString(logsPath));
+
             if(!file_obj.open(QIODevice::ReadOnly)){
                 qDebug()<<"Failed to open " << QString::fromStdString(logsPath);
                 exit(1);
             }
-
             QTextStream file_text(&file_obj);
             QString json_string;
             json_string = file_text.readAll();
@@ -85,10 +90,47 @@ int main(int argc, char *argv[])
                 qDebug() << "The array is empty";
                 exit(1);
             }
-            qDebug() << json_array;
+
+
+
+            QFile file_obj2(QString::fromStdString(logsPath2));
+            if(!file_obj2.open(QIODevice::ReadOnly)){
+                qDebug()<<"Failed to open " << QString::fromStdString(logsPath2);
+                exit(1);
+            }
+
+            QTextStream file_text2(&file_obj2);
+            QString json_string2;
+            json_string2 = file_text2.readAll();
+            file_obj2.close();
+            QByteArray json_bytes2 = json_string2.toLocal8Bit();
+            auto json_doc2=QJsonDocument::fromJson(json_bytes2);
+
+            if(json_doc2.isNull()){
+                qDebug()<<"Failed to create JSON doc.";
+                exit(2);
+            }
+            if(!json_doc2.isArray()){
+                qDebug() << "JSON doc is not an array.";
+                exit(1);
+            }
+
+            QJsonArray json_array2 = json_doc2.array();
+
+            if(json_array2.isEmpty()){
+                qDebug() << "The array is empty";
+                exit(1);
+            }
+
+            //todo gerer les différences de tailles
             for(int i=0; i< json_array.count(); ++i){
-                qDebug() << i;
-                qDebug() << json_array.at(i).toObject();
+                bool time = json_array2.at(i).toObject().value(QString::fromStdString("time")).toDouble() == json_array.at(i).toObject().value(QString::fromStdString("time")).toDouble();
+                bool port = json_array2.at(i).toObject().value(QString::fromStdString("port")).toString().compare(json_array.at(i).toObject().value(QString::fromStdString("port")).toString());
+                bool value = json_array2.at(i).toObject().value(QString::fromStdString("value")).toInt() == json_array.at(i).toObject().value(QString::fromStdString("value")).toInt();
+                qDebug() << "Same Time :" << time;
+                qDebug() << "Same port :" << !port;
+                qDebug() << "Same value :" << value;
+                
             }
         }
         

@@ -30,3 +30,6 @@
 *.exe
 *.out
 *.app
+simulide-master/build_XX/release/SimulIDE_0.3.11/bin/in2.json
+simulide-master/build_XX/release/SimulIDE_0.3.11/bin/out.json
+simulide-master/build_XX/release/SimulIDE_0.3.11/bin/simulide
