@@ -81,6 +81,9 @@ class AVRComponentPin : public McuComponentPin
             ptrAVRComponentPin->set_pinImpedance(value);
         }
 
+        static QJsonArray tempList;
+
+
     protected:
         void setPullup( uint32_t value );
 

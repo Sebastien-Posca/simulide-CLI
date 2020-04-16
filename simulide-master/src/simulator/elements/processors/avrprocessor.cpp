@@ -176,9 +176,9 @@ bool AvrProcessor::loadFirmware( QString fileN )
     /// Done: Modified simavr to not call abort(), instead it returns error code.
     if( avr_load_firmware( m_avrProcessor, &f ) != 0 )
     {
-        QMessageBox::warning(0,tr("Error:"),
-                               tr("Wrong firmware!!").arg(f.mmcu) );
-        return false;
+        // QMessageBox::warning(0,tr("Error:"),
+        //                        tr("Wrong firmware!!").arg(f.mmcu) );
+        // return false;
     }
     if( f.flashbase ) m_avrProcessor->pc = f.flashbase;
 
