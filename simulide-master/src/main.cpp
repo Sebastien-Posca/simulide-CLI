@@ -56,24 +56,18 @@ save_file.close();
 
 }
 
-void init() {
+void init() {                        QTimer timer;
+
                  QList<AVRComponentPin*> pinList = Arduino::myPinLIst;
          for ( int i = 0; i < pinList.size(); i++ ){
-                qDebug() << pinList[i]->getId();
-                if (pinList[i]->getId().compare("PB5") == 0){
-                    pinList[i]->set_pinImpedance(1);
-                    sleep(1);
-                    pinList[i]->set_pinVoltage(1);                    
-    QTimer::singleShot(500,[&pinList, &i]() { pinList[i]->set_pinVoltage(0); });
-    QTimer::singleShot(500, [&pinList, &i]() { pinList[i]->set_pinVoltage(1); });
+             AVRComponentPin* avrpin = pinList[i];
+                if (avrpin->getId().compare("PB5") == 0){
+                    avrpin->set_pinImpedance(1);
+    QTimer::singleShot(500, [avrpin]() { avrpin->set_pinVoltage(1); });
+        QTimer::singleShot(500, [avrpin]() { avrpin->set_pinVoltage(0); });
+    QTimer::singleShot(500, [avrpin]() { avrpin->set_pinVoltage(1); });
 
-//                     while(true){
-// pinList[i]->set_pinVoltage(1);
-//                     QThread::msleep(500);                
-//                     pinList[i]->set_pinVoltage(0);
-//                     QThread::msleep(500); 
-//                     }
-                                   
+                    //QTimer::singleShot(500, [&pinList, &i]() { pinList[i]->set_pinVoltage(0); });                     
                 }
          }
 }
@@ -209,9 +203,7 @@ int main(int argc, char *argv[])
         window.autoStart(simuPath, hexPath);      
          }
 
-        QTimer::singleShot(5000, []{
-            init();
-    });
+        
 
     
     QRect screenGeometry = QApplication::desktop()->screenGeometry();
@@ -221,7 +213,9 @@ int main(int argc, char *argv[])
 
     window.show();
     app.setApplicationVersion( APP_VERSION );
-    
+    QTimer::singleShot(5000, []{
+            init();
+    });
     return app.exec();
 }
 
