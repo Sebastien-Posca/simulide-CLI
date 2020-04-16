@@ -29,6 +29,8 @@ AVRComponentPin::AVRComponentPin( McuComponent* mcu, QString id, QString type, Q
 }
 AVRComponentPin::~AVRComponentPin(){}
 
+QJsonArray AVRComponentPin::tempList;
+
 void AVRComponentPin::attach( avr_t*  AvrProcessor )
 {
     m_AvrProcessor = AvrProcessor;
@@ -188,28 +190,23 @@ void AVRComponentPin::setPullup( uint32_t value )
     }
 }
 
+// QJsonArray AVRComponentPin::getLogs(){
+//     return tempList;
+// }
+
+
 void AVRComponentPin::set_pinVoltage( uint32_t value )
 {
     if( m_isInput ) return;
     qDebug() <<  Simulator::self()->getTime() << "Port" << m_port << m_id << "   value : " << value;
 // ==============================================================================================================
-    static QJsonArray tempList;
     QJsonObject tempObject
 {
     {"time", (int) Simulator::self()->getTime() },
     {"port", m_id},
     {"value", (int) value}
 }; 
-    tempList.append(tempObject);
-    QFile save_file("out.json");
-if(!save_file.open(QIODevice::WriteOnly)){
-    qDebug() << "failed to open save file";
-    exit(1);
-}
-QJsonDocument json_doc(tempList);
-QString json_string = json_doc.toJson();
-save_file.write(json_string.toLocal8Bit());
-save_file.close();
+    AVRComponentPin::tempList.append(tempObject);
 // ==============================================================================================================
 
 

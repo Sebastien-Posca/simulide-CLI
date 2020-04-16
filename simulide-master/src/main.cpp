@@ -21,12 +21,35 @@
 #include <QTranslator>
 #include <string>
 #include <iostream>
-using namespace std;
+#include "avrcomponentpin.h"
+
+#include <signal.h>
+#include <stdlib.h>
+#include <stdio.h>
 
 #include "mainwindow.h"
 
+void my_handler(int s){
+        extern QJsonArray tempList;
+
+        QFile save_file("out.json");
+if(!save_file.open(QIODevice::WriteOnly)){
+    qDebug() << "failed to open save file";
+    exit(1);
+}
+QJsonDocument json_doc(AVRComponentPin::tempList);
+QString json_string = json_doc.toJson();
+save_file.write(json_string.toLocal8Bit());
+save_file.close();
+           printf("Caught signal %d\n",s);
+           exit(1); 
+
+}
+
 int main(int argc, char *argv[])
 {
+
+   signal (SIGINT,my_handler);
 
 #ifdef _WIN32
     QStringList paths = QCoreApplication::libraryPaths();
