@@ -18,13 +18,16 @@ def gen(f):
     array = json.load(f)
     delay = 0
     port = 0
+    x = set([])
     print('void setup() {')
     for elem in array:
         port = int(elem['port'][-1])
         if  elem['port'][-2] == "D" :
-            print(genOut(port))
+            x.add(port)
         elif  elem['port'][-2] == "B" :
-            print(genOut(port+8))
+            x.add(port+8)
+    for e in x:
+        print(genOut(e))
     print('}')
     print('void loop() {')
     for elem in array:
