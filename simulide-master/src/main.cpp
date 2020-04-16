@@ -22,12 +22,22 @@
 #include <string>
 #include <iostream>
 #include "avrcomponentpin.h"
+#include "arduino.h"
+
 
 #include <signal.h>
 #include <stdlib.h>
 #include <stdio.h>
+    #include <unistd.h>
+
+    #include <chrono>
+#include <thread>
+
 
 #include "mainwindow.h"
+
+using namespace std; 
+
 
 void my_handler(int s){
         extern QJsonArray tempList;
@@ -44,6 +54,28 @@ save_file.close();
            printf("Caught signal %d\n",s);
            exit(1); 
 
+}
+
+void init() {
+                 QList<AVRComponentPin*> pinList = Arduino::myPinLIst;
+         for ( int i = 0; i < pinList.size(); i++ ){
+                qDebug() << pinList[i]->getId();
+                if (pinList[i]->getId().compare("PB5") == 0){
+                    pinList[i]->set_pinImpedance(1);
+                    sleep(1);
+                    pinList[i]->set_pinVoltage(1);                    
+    QTimer::singleShot(500,[&pinList, &i]() { pinList[i]->set_pinVoltage(0); });
+    QTimer::singleShot(500, [&pinList, &i]() { pinList[i]->set_pinVoltage(1); });
+
+//                     while(true){
+// pinList[i]->set_pinVoltage(1);
+//                     QThread::msleep(500);                
+//                     pinList[i]->set_pinVoltage(0);
+//                     QThread::msleep(500); 
+//                     }
+                                   
+                }
+         }
 }
 
 int main(int argc, char *argv[])
@@ -174,8 +206,13 @@ int main(int argc, char *argv[])
     MainWindow window;
 
     if(!simuPath.empty() && !hexPath.empty()){
-        window.autoStart(simuPath, hexPath);
-    }
+        window.autoStart(simuPath, hexPath);      
+         }
+
+        QTimer::singleShot(5000, []{
+            init();
+    });
+
     
     QRect screenGeometry = QApplication::desktop()->screenGeometry();
     int x = ( screenGeometry.width()-window.width() ) / 2;
@@ -184,6 +221,7 @@ int main(int argc, char *argv[])
 
     window.show();
     app.setApplicationVersion( APP_VERSION );
+    
     return app.exec();
 }
 

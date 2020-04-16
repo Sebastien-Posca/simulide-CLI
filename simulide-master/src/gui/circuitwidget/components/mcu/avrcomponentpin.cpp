@@ -31,6 +31,10 @@ AVRComponentPin::~AVRComponentPin(){}
 
 QJsonArray AVRComponentPin::tempList;
 
+QString AVRComponentPin::getId( ){
+    return m_id;
+}
+
 void AVRComponentPin::attach( avr_t*  AvrProcessor )
 {
     m_AvrProcessor = AvrProcessor;
@@ -208,7 +212,6 @@ void AVRComponentPin::set_pinVoltage( uint32_t value )
 }; 
     AVRComponentPin::tempList.append(tempObject);
 // ==============================================================================================================
-
 
     //if( m_isInput ) setPullup( value>0 ); // Activate pullup when port is written while input
 

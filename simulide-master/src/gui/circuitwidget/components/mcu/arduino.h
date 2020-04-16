@@ -38,6 +38,8 @@ class Arduino : public McuComponent
         Arduino( QObject* parent, QString type, QString id );
         ~Arduino();
 
+        static QList<AVRComponentPin*> myPinLIst;
+
  static Component* construct( QObject* parent, QString type, QString id );
  static LibraryItem * libraryItem();
  
