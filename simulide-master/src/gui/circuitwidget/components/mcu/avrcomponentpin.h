@@ -53,6 +53,8 @@ class AVRComponentPin : public McuComponentPin
         void setVChanged();
         
         void adcread();
+        
+        QString getId();
 
         static void port_hook( struct avr_irq_t* irq, uint32_t value, void* param )
         {
