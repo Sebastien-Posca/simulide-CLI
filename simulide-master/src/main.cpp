@@ -50,7 +50,7 @@ void my_handler(int s)
     QString json_string = json_doc.toJson();
     save_file.write(json_string.toLocal8Bit());
     save_file.close();
-    printf("Caught signal %d\n", s);
+    printf("Logs saved !\n");
     exit(1);
 }
 
@@ -58,7 +58,6 @@ void init(QJsonArray json_array)
 {
     QList<AVRComponentPin *> pinList = Arduino::myPinLIst;
     bool isActive = false;
-    qDebug() << "SALUT" << json_array.count();
     for (int p = 0; p < json_array.count(); ++p)
     {
         for (int q = 0; q < pinList.size(); ++q)
@@ -75,25 +74,30 @@ void init(QJsonArray json_array)
     for (int i = 0; i < json_array.count(); ++i)
     {
         QTimer *timer = new QTimer();
+        int time;
         while (isActive != false)
         {
             QApplication::processEvents();
         }
+        QString port = json_array.at(i).toObject().value(QString::fromStdString("port")).toString();
+        int value = json_array.at(i).toObject().value(QString::fromStdString("value")).toInt();
+        if (i != 0)
+        {
+            time = json_array.at(i).toObject().value(QString::fromStdString("time")).toInt() - json_array.at(i - 1).toObject().value(QString::fromStdString("time")).toInt();
+        }
+        else
+        {
+            time = json_array.at(i).toObject().value(QString::fromStdString("time")).toInt();
+        }
         for (int k = 0; k < pinList.size(); ++k)
         {
             AVRComponentPin *avrpin = pinList[k];
-            QString port = json_array.at(i).toObject().value(QString::fromStdString("port")).toString();
-            int value = json_array.at(i).toObject().value(QString::fromStdString("value")).toInt();
-            double time = json_array.at(i).toObject().value(QString::fromStdString("time")).toDouble();
             if (avrpin->getId().compare(port) == 0)
             {
-                //QTimer::singleShot(10000, [avrpin, value]() { avrpin->set_pinVoltage(value); });
-                timer->moveToThread(qApp->thread());
                 timer->setSingleShot(true);
                 isActive = true;
-
                 QObject::connect(timer, &QTimer::timeout, [avrpin, value, &isActive]() { avrpin->set_pinVoltage(value); isActive = false; });
-                timer->start(time);
+                timer->start((long)time);
             }
         }
     }
@@ -137,7 +141,6 @@ int main(int argc, char *argv[])
         }
         if (strcmp(argv[i], "--play") == 0)
         {
-            qDebug() << "WTF" << argv[i + 1];
             logsPath = argv[++i];
             QFile file_obj(QString::fromStdString(logsPath));
 
@@ -171,6 +174,7 @@ int main(int argc, char *argv[])
                 qDebug() << "The array is empty";
                 exit(1);
             }
+
         }
         if (strcmp(argv[i], "--logs") == 0)
         {
@@ -277,6 +281,10 @@ int main(int argc, char *argv[])
     {
         window.autoStart(simuPath, hexPath);
     }
+    else if (!simuPath.empty()){
+        QString hex = QDir::currentPath()+"/play.hex";
+        window.autoStart(simuPath,  hex.toStdString());
+    }
 
     QRect screenGeometry = QApplication::desktop()->screenGeometry();
     int x = (screenGeometry.width() - window.width()) / 2;
@@ -285,7 +293,7 @@ int main(int argc, char *argv[])
 
     window.show();
     app.setApplicationVersion(APP_VERSION);
-    QTimer::singleShot(5000, [&json_array] {
+    QTimer::singleShot(1000, [&json_array] {
         init(json_array);
     });
     return app.exec();
