@@ -220,8 +220,6 @@ void Arduino::attachPins()
 void Arduino::addPin( QString id, QString type, QString label, int pos, int xpos, int ypos, int angle )
 {
     //qDebug()<<pos<<id<<label;
-        qDebug() << "JE SUIS UN PIN :" << id;
-
     AVRComponentPin*  newPin = new AVRComponentPin( this, id, type, label, pos, xpos, ypos, angle );
     m_pinList.append( newPin );
     Arduino::myPinLIst.append(newPin);
