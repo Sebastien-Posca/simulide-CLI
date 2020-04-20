@@ -36,7 +36,43 @@
 
 using namespace std;
 
-void my_handler(int s)
+void open_file(string logsPath, QJsonArray &json_array)
+{
+    QFile file_obj(QString::fromStdString(logsPath));
+
+    if (!file_obj.open(QIODevice::ReadOnly))
+    {
+        qDebug() << "Failed to open " << QString::fromStdString(logsPath);
+        exit(1);
+    }
+    QTextStream file_text(&file_obj);
+    QString json_string;
+    json_string = file_text.readAll();
+    file_obj.close();
+    QByteArray json_bytes = json_string.toLocal8Bit();
+    auto json_doc = QJsonDocument::fromJson(json_bytes);
+
+    if (json_doc.isNull())
+    {
+        qDebug() << "Failed to create JSON doc.";
+        exit(2);
+    }
+    if (!json_doc.isArray())
+    {
+        qDebug() << "JSON doc is not an array.";
+        exit(1);
+    }
+
+    json_array = json_doc.array();
+
+    if (json_array.isEmpty())
+    {
+        qDebug() << "The array is empty";
+        exit(1);
+    }
+}
+
+void save_logs(int s)
 {
     extern QJsonArray tempList;
 
@@ -102,11 +138,15 @@ void init(QJsonArray json_array)
         }
     }
 }
+bool inRange(double low, double high, double x)
+{
+    return (low <= x && x <= high);
+}
 
 int main(int argc, char *argv[])
 {
 
-    signal(SIGINT, my_handler);
+    signal(SIGINT, save_logs);
 
 #ifdef _WIN32
     QStringList paths = QCoreApplication::libraryPaths();
@@ -126,7 +166,9 @@ int main(int argc, char *argv[])
     string hexPath;
     string logsPath;
     string logsPath2;
+    int margin = 0;
     QJsonArray json_array;
+    QJsonArray json_array2;
 
     for (int i = 0; i < argc - 1; ++i)
     {
@@ -142,119 +184,43 @@ int main(int argc, char *argv[])
         if (strcmp(argv[i], "--play") == 0)
         {
             logsPath = argv[++i];
-            QFile file_obj(QString::fromStdString(logsPath));
-
-            if (!file_obj.open(QIODevice::ReadOnly))
-            {
-                qDebug() << "Failed to open " << QString::fromStdString(logsPath);
-                exit(1);
-            }
-            QTextStream file_text(&file_obj);
-            QString json_string;
-            json_string = file_text.readAll();
-            file_obj.close();
-            QByteArray json_bytes = json_string.toLocal8Bit();
-            auto json_doc = QJsonDocument::fromJson(json_bytes);
-
-            if (json_doc.isNull())
-            {
-                qDebug() << "Failed to create JSON doc.";
-                exit(2);
-            }
-            if (!json_doc.isArray())
-            {
-                qDebug() << "JSON doc is not an array.";
-                exit(1);
-            }
-
-            json_array = json_doc.array();
-
-            if (json_array.isEmpty())
-            {
-                qDebug() << "The array is empty";
-                exit(1);
-            }
-
+            open_file(logsPath, json_array);
         }
         if (strcmp(argv[i], "--logs") == 0)
         {
             logsPath = argv[++i];
             logsPath2 = argv[++i];
-            qDebug() << QString::fromStdString(logsPath);
-            qDebug() << QString::fromStdString(logsPath2);
-
-            QFile file_obj(QString::fromStdString(logsPath));
-
-            if (!file_obj.open(QIODevice::ReadOnly))
+            if (argc >= i + 1)
             {
-                qDebug() << "Failed to open " << QString::fromStdString(logsPath);
-                exit(1);
-            }
-            QTextStream file_text(&file_obj);
-            QString json_string;
-            json_string = file_text.readAll();
-            file_obj.close();
-            QByteArray json_bytes = json_string.toLocal8Bit();
-            auto json_doc = QJsonDocument::fromJson(json_bytes);
-
-            if (json_doc.isNull())
-            {
-                qDebug() << "Failed to create JSON doc.";
-                exit(2);
-            }
-            if (!json_doc.isArray())
-            {
-                qDebug() << "JSON doc is not an array.";
-                exit(1);
+                margin = atoi(argv[++i]);
             }
 
-            QJsonArray json_array = json_doc.array();
+            open_file(logsPath, json_array);
+            open_file(logsPath2, json_array2);
 
-            if (json_array.isEmpty())
+            int count = 0;
+            if (json_array.count() < json_array2.count())
             {
-                qDebug() << "The array is empty";
-                exit(1);
+                count = json_array.count();
             }
-
-            QFile file_obj2(QString::fromStdString(logsPath2));
-            if (!file_obj2.open(QIODevice::ReadOnly))
+            else
             {
-                qDebug() << "Failed to open " << QString::fromStdString(logsPath2);
-                exit(1);
+                count = json_array2.count();
             }
-
-            QTextStream file_text2(&file_obj2);
-            QString json_string2;
-            json_string2 = file_text2.readAll();
-            file_obj2.close();
-            QByteArray json_bytes2 = json_string2.toLocal8Bit();
-            auto json_doc2 = QJsonDocument::fromJson(json_bytes2);
-
-            if (json_doc2.isNull())
+            for (int i = 0; i < count; ++i)
             {
-                qDebug() << "Failed to create JSON doc.";
-                exit(2);
-            }
-            if (!json_doc2.isArray())
-            {
-                qDebug() << "JSON doc is not an array.";
-                exit(1);
-            }
 
-            QJsonArray json_array2 = json_doc2.array();
+                double time1 = json_array.at(i).toObject().value(QString::fromStdString("time")).toDouble();
+                double time2 = json_array2.at(i).toObject().value(QString::fromStdString("time")).toDouble();
+                QString port1 = json_array.at(i).toObject().value(QString::fromStdString("port")).toString();
+                QString port2 = json_array2.at(i).toObject().value(QString::fromStdString("port")).toString();
+                int value1 = json_array.at(i).toObject().value(QString::fromStdString("value")).toInt();
+                int value2 = json_array2.at(i).toObject().value(QString::fromStdString("value")).toInt();
 
-            if (json_array2.isEmpty())
-            {
-                qDebug() << "The array is empty";
-                exit(1);
-            }
+                bool time = inRange(time1 - margin, time1 + margin, time2);
+                bool port = port2.compare(port1);
+                bool value = value2 == value1;
 
-            //todo gerer les différences de tailles
-            for (int i = 0; i < json_array.count(); ++i)
-            {
-                bool time = json_array2.at(i).toObject().value(QString::fromStdString("time")).toDouble() == json_array.at(i).toObject().value(QString::fromStdString("time")).toDouble();
-                bool port = json_array2.at(i).toObject().value(QString::fromStdString("port")).toString().compare(json_array.at(i).toObject().value(QString::fromStdString("port")).toString());
-                bool value = json_array2.at(i).toObject().value(QString::fromStdString("value")).toInt() == json_array.at(i).toObject().value(QString::fromStdString("value")).toInt();
                 qDebug() << "Same Time :" << time;
                 qDebug() << "Same port :" << !port;
                 qDebug() << "Same value :" << value;
@@ -281,9 +247,10 @@ int main(int argc, char *argv[])
     {
         window.autoStart(simuPath, hexPath);
     }
-    else if (!simuPath.empty()){
-        QString hex = QDir::currentPath()+"/play.hex";
-        window.autoStart(simuPath,  hex.toStdString());
+    else if (!simuPath.empty())
+    {
+        QString hex = QDir::currentPath() + "/play.hex";
+        window.autoStart(simuPath, hex.toStdString());
     }
 
     QRect screenGeometry = QApplication::desktop()->screenGeometry();
@@ -293,7 +260,7 @@ int main(int argc, char *argv[])
 
     window.show();
     app.setApplicationVersion(APP_VERSION);
-    QTimer::singleShot(1000, [&json_array] {
+    QTimer::singleShot(5000, [&json_array] {
         init(json_array);
     });
     return app.exec();
