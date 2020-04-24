@@ -107,7 +107,7 @@ void init(QJsonArray json_array)
             }
         }
     }
-    for (int i = 0; i < json_array.count(); ++i)
+    for (int i = 0; i < json_array.count()-1; ++i)
     {
         QTimer *timer = new QTimer();
         int time;
