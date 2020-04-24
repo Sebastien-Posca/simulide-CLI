@@ -231,7 +231,7 @@ void AVRComponentPin::set_pinVoltage( uint32_t value )
 
 void AVRComponentPin::set_pinImpedance( uint32_t value )
 {
-    qDebug() << "Port" << m_port << m_id << "  is Output: " << (value > 0 );
+    // qDebug() << "Port" << m_port << m_id << "  is Output: " << (value > 0 );
     //qDebug() << Simulator::self()->reaClock();
     
     if( value > 0 )                         // Pis is Output

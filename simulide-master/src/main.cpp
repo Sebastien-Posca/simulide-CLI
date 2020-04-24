@@ -137,6 +137,7 @@ void init(QJsonArray json_array)
             }
         }
     }
+    qDebug() << "Simulation terminée !";
 }
 bool inRange(double low, double high, double x)
 {
