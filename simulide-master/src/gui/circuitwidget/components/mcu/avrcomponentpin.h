@@ -85,7 +85,6 @@ class AVRComponentPin : public McuComponentPin
 
         static QJsonArray tempList;
 
-
     protected:
         void setPullup( uint32_t value );
 

@@ -76,7 +76,7 @@ void McuComponent::initChip()
     m_dataFile = ComponentSelector::self()->getXmlFile( compName );
     
     QFile file( m_dataFile );
-
+    
     if(( m_dataFile == "" ) || ( !file.exists() ))
     {
         m_error = 1;

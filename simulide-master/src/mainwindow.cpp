@@ -32,7 +32,6 @@
 #include <iostream>
 using namespace std;
 
-
 MainWindow* MainWindow::m_pSelf = 0l;
 
 MainWindow::MainWindow()
@@ -56,8 +55,6 @@ MainWindow::MainWindow()
     readSettings();
     
     loadPlugins();
-
-   
 }
 MainWindow::~MainWindow(){ }
 

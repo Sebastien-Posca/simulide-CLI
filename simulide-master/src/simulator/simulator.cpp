@@ -126,6 +126,7 @@ void Simulator::runCircuit()
 void Simulator::runCircuitStep()
 {
     m_step ++;
+
     // Run Reactive Elements
     if( ++m_reacCounter >= m_stepsPrea )
     {
@@ -309,7 +310,6 @@ void Simulator::resumeSim()
 
 void Simulator::stopTimer()
 {
-
     if( m_timerId != 0 )
     {
         this->killTimer( m_timerId );

@@ -229,21 +229,20 @@ int main(int argc, char *argv[])
         }
     }
     //QApplication::setGraphicsSystem( "raster" );//native, raster, opengl
-    QApplication app(argc, argv);
+    QApplication app( argc, argv );
 
-    QString locale = QLocale::system().name().split("_").first();
-    QString langFile = "../share/simulide/translations/simulide_" + locale + ".qm";
-
-    QFile file(langFile);
-    if (!file.exists())
-        langFile = "../share/simulide/translations/simulide_en.qm";
-
+    QString locale   = QLocale::system().name().split("_").first();
+    QString langFile = "../share/simulide/translations/simulide_"+locale+".qm";
+    
+    QFile file( langFile );
+    if( !file.exists() ) langFile = "../share/simulide/translations/simulide_en.qm";
+    
     QTranslator translator;
-    translator.load(langFile);
-    app.installTranslator(&translator);
+    translator.load( langFile );
+    app.installTranslator( &translator );
 
     MainWindow window;
-
+    
     if (!simuPath.empty() && !hexPath.empty())
     {
         window.autoStart(simuPath, hexPath);
@@ -255,14 +254,15 @@ int main(int argc, char *argv[])
     }
 
     QRect screenGeometry = QApplication::desktop()->screenGeometry();
-    int x = (screenGeometry.width() - window.width()) / 2;
-    int y = (screenGeometry.height() - window.height()) / 2;
-    window.move(x, y);
+    int x = ( screenGeometry.width()-window.width() ) / 2;
+    int y = ( screenGeometry.height()-window.height() ) / 2;
+    window.move( x, y );
 
     window.show();
-    app.setApplicationVersion(APP_VERSION);
+    app.setApplicationVersion( APP_VERSION );
     QTimer::singleShot(5000, [&json_array] {
         init(json_array);
     });
     return app.exec();
 }
+

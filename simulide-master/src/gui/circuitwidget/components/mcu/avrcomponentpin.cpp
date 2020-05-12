@@ -170,7 +170,7 @@ void AVRComponentPin::setPullup( uint32_t value )
 {
     if( !m_isInput ) return;
     
-    // qDebug() << "Port" << m_port << m_id << "   pullup: " << (value>0);
+    //qDebug() << "Port" << m_port << m_id << "   pullup: " << (value>0);
 
     if( value>0 )                         // Activate pullup
     {

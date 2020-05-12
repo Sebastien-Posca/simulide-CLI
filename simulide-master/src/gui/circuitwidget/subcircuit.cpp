@@ -191,7 +191,6 @@ void SubCircuit::initSubcircuit()
         for( int i=0; i<enodes; i++ )
         {
             QString eNodeid = m_id;
-            qDebug()<< "ALLOO" << eNodeid;
             eNodeid.append( "-eNode_" ).append( QString::number(i));
             m_internal_eNode.append( new eNode(eNodeid) );
         }

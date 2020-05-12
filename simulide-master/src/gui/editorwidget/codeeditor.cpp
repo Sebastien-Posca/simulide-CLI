@@ -402,7 +402,7 @@ void CodeEditor::runClockTick( bool over )
         m_prevDebugLine = m_debugLine;
     }
     while( m_debugLine <= 0 ); // Run to next src line
-    qDebug() <<"m_prevDebugLine "<<m_prevDebugLine<< "  m_debugLine "<<m_debugLine;
+    //qDebug() <<"m_prevDebugLine "<<m_prevDebugLine<< "  m_debugLine "<<m_debugLine;
     
     if( m_debugger->driveCirc() ) Simulator::self()->runGraphicStep();
 }
